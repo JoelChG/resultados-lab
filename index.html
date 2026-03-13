@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resultados de Laboratorio — Estudio UABC</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f2ed;
+    --surface: #ffffff;
+    --surface2: #faf8f5;
+    --ink: #1a1714;
+    --ink2: #6b6560;
+    --ink3: #9c9590;
+    --accent: #2d6a4f;
+    --warn: #b5451b;
+    --warn-light: #fceee9;
+    --ok: #2d6a4f;
+    --ok-light: #e8f4ee;
+    --border: #e8e4df;
+    --gold: #c9a84c;
+    --gold-light: #fdf6e3;
+    --blue-light: #e8f0fe;
+    --blue: #1a56a0;
+    --shadow: 0 2px 20px rgba(26,23,20,0.08);
+    --shadow-lg: 0 8px 40px rgba(26,23,20,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── LOGIN ─────────────────────────────────────────────── */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #login-screen::before {
+    content: '';
+    position: absolute;
+    top: -30%; right: -20%;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(45,106,79,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  #login-screen::after {
+    content: '';
+    position: absolute;
+    bottom: -20%; left: -10%;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .login-card {
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    animation: fadeUp 0.6s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .login-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .login-logo-icon {
+    width: 44px; height: 44px;
+    background: var(--accent);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .login-logo-icon svg { color: white; }
+
+  .login-logo-text {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--ink2);
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .login-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .login-subtitle {
+    font-size: 0.875rem;
+    color: var(--ink2);
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+  }
+
+  .form-group { margin-bottom: 1.5rem; }
+
+  label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink2);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 0.5rem;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.14em;
+    color: var(--ink);
+    background: var(--surface2);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    text-transform: uppercase;
+  }
+
+  input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(45,106,79,0.12);
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 0.9rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    letter-spacing: 0.03em;
+  }
+
+  .btn-primary:hover { background: #235c42; box-shadow: 0 4px 16px rgba(45,106,79,0.3); }
+  .btn-primary:active { transform: scale(0.98); }
+
+  .error-msg {
+    display: none;
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: var(--warn-light);
+    border: 1px solid rgba(181,69,27,0.2);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: var(--warn);
+    text-align: center;
+  }
+
+  .login-footer {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.76rem;
+    color: var(--ink3);
+    text-align: center;
+    line-height: 1.7;
+  }
+
+  /* ── LOADING ────────────────────────────────────────────── */
+  #loading-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── TOP BAR ────────────────────────────────────────────── */
+  #results-screen { display: none; }
+
+  .top-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .top-bar-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.05rem;
+    color: var(--ink);
+  }
+
+  .top-bar-brand span { color: var(--accent); }
+
+  .btn-logout {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink2);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.4rem 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .btn-logout:hover { background: var(--surface2); color: var(--ink); }
+
+  /* ── RESULTS LAYOUT ─────────────────────────────────────── */
+  .results-container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  .results-header {
+    margin-bottom: 2rem;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .results-header .greeting {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.3rem;
+  }
+
+  .results-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+
+  .results-header .meta {
+    font-size: 0.85rem;
+    color: var(--ink2);
+  }
+
+  /* ── HEMOLISIS ALERT ─────────────────────────────────────── */
+  .hemolisis-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: var(--gold-light);
+    border: 1px solid rgba(201,168,76,0.35);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    color: #6b5000;
+    animation: fadeUp 0.5s 0.05s ease both;
+  }
+
+  .hemolisis-alert-icon { font-size: 1.1rem; margin-top: 0.05rem; }
+
+  /* ── LEGEND ─────────────────────────────────────────────── */
+  .legend {
+    display: flex;
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+    flex-wrap: wrap;
+    animation: fadeUp 0.5s 0.1s ease both;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    color: var(--ink2);
+  }
+
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .legend-dot.ok       { background: var(--ok); }
+  .legend-dot.warn     { background: var(--warn); }
+  .legend-dot.low      { background: var(--blue); }
+  .legend-dot.border   { background: var(--gold); }
+
+  /* ── HOMA CARD ──────────────────────────────────────────── */
+  .homa-card {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 1.75rem;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.5s 0.15s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .homa-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+  }
+
+  .homa-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .homa-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.35rem;
+    color: var(--ink);
+  }
+
+  .homa-title small {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--ink3);
+    margin-top: 0.15rem;
+  }
+
+  .homa-value-box { text-align: center; min-width: 120px; }
+
+  .homa-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3rem;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .homa-badge {
+    display: inline-block;
+    margin-top: 0.4rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .homa-badge.normal  { background: var(--ok-light); color: var(--ok); }
+  .homa-badge.altered { background: var(--warn-light); color: var(--warn); }
+
+  .homa-bar-wrap { margin-bottom: 1rem; }
+
+  .homa-bar-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: var(--ink3);
+    margin-bottom: 0.4rem;
+  }
+
+  .homa-bar-track {
+    height: 10px;
+    border-radius: 99px;
+    background: linear-gradient(90deg, #c8ecd8 0%, #d4edda 40%, #fce8cc 65%, #fceee9 100%);
+    position: relative;
+    border: 1px solid var(--border);
+  }
+
+  .homa-bar-marker {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px; height: 16px;
+    background: var(--ink);
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    transition: left 0.9s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  .homa-cutoff-line {
+    position: absolute;
+    top: -4px; bottom: -4px;
+    width: 2px;
+    background: rgba(181,69,27,0.45);
+    left: 40%;
+  }
+
+  .homa-interpretation {
+    font-size: 0.875rem;
+    color: var(--ink2);
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 0.875rem 1rem;
+    line-height: 1.65;
+  }
+
+  /* ── PANEL ──────────────────────────────────────────────── */
+  .panel {
+    background: var(--surface);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .panel:nth-of-type(1) { animation-delay: 0.2s; }
+  .panel:nth-of-type(2) { animation-delay: 0.25s; }
+  .panel:nth-of-type(3) { animation-delay: 0.3s; }
+  .panel:nth-of-type(4) { animation-delay: 0.35s; }
+  .panel:nth-of-type(5) { animation-delay: 0.4s; }
+
+  .panel-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--surface2);
+  }
+
+  .panel-icon {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.95rem;
+  }
+
+  .panel-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.05rem;
+    color: var(--ink);
+  }
+
+  /* ── TABLE ──────────────────────────────────────────────── */
+  .results-table { width: 100%; border-collapse: collapse; }
+
+  .results-table th {
+    padding: 0.55rem 1.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--ink3);
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+
+  .results-table th:nth-child(2),
+  .results-table th:last-child { text-align: center; }
+
+  .results-table td {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .results-table tr:last-child td { border-bottom: none; }
+  .results-table tr:hover td { background: rgba(245,242,237,0.5); }
+
+  .analyte-name  { font-weight: 500; color: var(--ink); }
+  .analyte-unit  { font-size: 0.76rem; color: var(--ink3); margin-left: 0.3rem; }
+  .ref-range     { font-size: 0.82rem; color: var(--ink2); }
+
+  .value-cell {
+    font-weight: 600;
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .value-normal     { color: var(--ok); }
+  .value-high       { color: var(--warn); }
+  .value-low        { color: var(--blue); }
+  .value-borderline { color: #8a6a00; }
+
+  .status-cell { text-align: center; }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.22rem 0.65rem;
+    border-radius: 20px;
+    font-size: 0.73rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .status-pill.normal     { background: var(--ok-light);   color: var(--ok); }
+  .status-pill.high       { background: var(--warn-light);  color: var(--warn); }
+  .status-pill.low        { background: var(--blue-light);  color: var(--blue); }
+  .status-pill.borderline { background: var(--gold-light);  color: #8a6a00; }
+
+  /* ── TG/HDL INDEX ──────────────────────────────────────── */
+  .index-card {
+    margin: 0 1.5rem 1.5rem;
+    background: var(--gold-light);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .index-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    color: var(--ink);
+    min-width: 60px;
+  }
+
+  .index-label { font-size: 0.78rem; color: var(--ink2); margin-top: 0.1rem; }
+  .index-divider { width: 1px; height: 38px; background: rgba(201,168,76,0.4); }
+
+  .index-interp {
+    font-size: 0.83rem;
+    color: var(--ink2);
+    flex: 1;
+    min-width: 200px;
+    line-height: 1.55;
+  }
+
+  /* ── RECOMENDACIONES ────────────────────────────────────── */
+  .reco-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+
+  .reco-item {
+    background: var(--surface2);
+    border-radius: 12px;
+    padding: 1.1rem;
+    border: 1px solid var(--border);
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+    transition: box-shadow 0.2s;
+  }
+
+  .reco-item:hover { box-shadow: var(--shadow); }
+  .reco-emoji { font-size: 1.4rem; line-height: 1; margin-top: 0.1rem; }
+
+  .reco-content h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+  }
+
+  .reco-content p {
+    font-size: 0.79rem;
+    color: var(--ink2);
+    line-height: 1.55;
+  }
+
+  /* ── DISCLAIMER ─────────────────────────────────────────── */
+  .disclaimer {
+    margin-top: 2rem;
+    padding: 1.1rem 1.25rem;
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    font-size: 0.76rem;
+    color: var(--ink3);
+    line-height: 1.75;
+    text-align: center;
+  }
+
+  /* ── RESPONSIVE ─────────────────────────────────────────── */
+  @media (max-width: 600px) {
+    .login-card { padding: 2rem 1.5rem; }
+    .results-container { padding: 1.5rem 1rem 3rem; }
+    .results-table th, .results-table td { padding: 0.65rem 0.875rem; }
+    .top-bar { padding: 0.875rem 1rem; }
+    .homa-header { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN ══════════════════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>
+        </svg>
+      </div>
+      <div class="login-logo-text">
+        Grupo de Investigación Biomédica<br>Hospital General de Mexicali · UABC
+      </div>
+    </div>
+    <h1 class="login-title">Resultados<br>de Laboratorio</h1>
+    <p class="login-subtitle">Ingresa el código de acceso que te fue proporcionado para consultar tus resultados del estudio.</p>
+    <div class="form-group">
+      <label for="access-code">Código de acceso</label>
+      <input type="text" id="access-code" placeholder="Ej. AB3K7M" maxlength="10"
+             autocomplete="off" autocapitalize="characters" spellcheck="false">
+    </div>
+    <button class="btn-primary" onclick="handleLogin()">Consultar mis resultados</button>
+    <div class="error-msg" id="error-msg">Código no encontrado. Verifica e intenta de nuevo.</div>
+    <div class="login-footer">
+      Tus resultados son confidenciales. Solo tú puedes acceder a ellos con tu código único.<br>
+      <strong>Dr. Joel Chávez Gómez</strong> · Cédula 12535118
+    </div>
+  </div>
+</div>
+
+<!-- ══ LOADING ═════════════════════════════════════════════════════ -->
+<div id="loading-screen">
+  <div class="spinner"></div>
+  <p style="font-size:0.875rem; color:var(--ink2);">Cargando tus resultados…</p>
+</div>
+
+<!-- ══ RESULTS ═════════════════════════════════════════════════════ -->
+<div id="results-screen">
+  <div class="top-bar">
+    <div class="top-bar-brand">Lab<span>Results</span> · UABC</div>
+    <button class="btn-logout" onclick="handleLogout()">Cerrar sesión</button>
+  </div>
+
+  <div class="results-container">
+
+    <div class="results-header">
+      <div class="greeting">Resultados del estudio TG/HDL-c e insulino-resistencia</div>
+      <h1 id="patient-name">—</h1>
+      <div class="meta" id="patient-meta"></div>
+    </div>
+
+    <!-- Alerta hemólisis (se muestra solo si aplica) -->
+    <div class="hemolisis-alert" id="hemolisis-alert" style="display:none;">
+      <div class="hemolisis-alert-icon">⚠️</div>
+      <div>
+        <strong>Nota sobre la muestra:</strong> Se detectó hemólisis en tu muestra de sangre.
+        Esto puede afectar los valores de algunos analitos (especialmente AST, ALT y LDH).
+        El médico evaluará si es necesario repetir alguna determinación.
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot ok"></div> Normal</div>
+      <div class="legend-item"><div class="legend-dot warn"></div> Alto / Elevado</div>
+      <div class="legend-item"><div class="legend-dot low"></div> Bajo</div>
+      <div class="legend-item"><div class="legend-dot border"></div> Limítrofe</div>
+    </div>
+
+    <!-- ── HOMA-IR ────────────────────────────────────────── -->
+    <div class="homa-card">
+      <div class="homa-header">
+        <div class="homa-title">
+          Índice HOMA-IR
+          <small>Homeostatic Model Assessment of Insulin Resistance · Matthews et al., 1985</small>
+        </div>
+        <div class="homa-value-box">
+          <div class="homa-number" id="homa-value">—</div>
+          <div class="homa-badge" id="homa-badge">—</div>
+        </div>
+      </div>
+      <div class="homa-bar-wrap">
+        <div class="homa-bar-labels">
+          <span>0</span>
+          <span>Punto de corte: 2.5</span>
+          <span>≥ 5</span>
+        </div>
+        <div class="homa-bar-track">
+          <div class="homa-cutoff-line"></div>
+          <div class="homa-bar-marker" id="homa-marker" style="left:0%"></div>
+        </div>
+      </div>
+      <div class="homa-interpretation" id="homa-interp"></div>
+    </div>
+
+    <!-- ── PERFIL DE LÍPIDOS ──────────────────────────────── -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#eef6f1;">🩸</div>
+        <div class="panel-title">Perfil de Lípidos</div>
+      </div>
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Analito</th>
+            <th>Tu valor</th>
+            <th>Referencia</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-lipidos"></tbody>
+      </table>
+      <!-- Índice TG/HDL-c -->
+      <div class="index-card">
+        <div>
+          <div class="index-value" id="tghdl-value">—</div>
+          <div class="index-label">Índice TG/HDL-c</div>
+        </div>
+        <div class="index-divider"></div>
+        <div class="index-interp" id="tghdl-interp">—</div>
+      </div>
+    </div>
+
+    <!-- ── GLUCOSA E INSULINA ─────────────────────────────── -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fdf6e3;">🔬</div>
+        <div class="panel-title">Glucosa e Insulina en Ayuno</div>
+      </div>
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Analito</th>
+            <th>Tu valor</th>
+            <th>Referencia</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-glucosa"></tbody>
+      </table>
+    </div>
+
+    <!-- ── FUNCIÓN HEPÁTICA Y LDH ────────────────────────── -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#f0f4ff;">🫀</div>
+        <div class="panel-title">Enzimas Hepáticas y LDH</div>
+      </div>
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Analito</th>
+            <th>Tu valor</th>
+            <th>Referencia</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-hepatica"></tbody>
+      </table>
+    </div>
+
+    <!-- ── FUNCIÓN RENAL ──────────────────────────────────── -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#f5f0ff;">🧪</div>
+        <div class="panel-title">Función Renal</div>
+      </div>
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Analito</th>
+            <th>Tu valor</th>
+            <th>Referencia</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-renal"></tbody>
+      </table>
+    </div>
+
+    <!-- ── RECOMENDACIONES ────────────────────────────────── -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fdf6e3;">💡</div>
+        <div class="panel-title">Recomendaciones de Estilo de Vida</div>
+      </div>
+      <div class="reco-grid" id="reco-grid"></div>
+    </div>
+
+    <div class="disclaimer">
+      Estos resultados forman parte del estudio de investigación sobre el índice TG/HDL-c como marcador de resistencia a la insulina.<br>
+      La información tiene fines exclusivamente académicos y de devolución de resultados a los participantes.<br>
+      Para orientación clínica personalizada, consulta a tu médico tratante.<br>
+      <strong>Matthews DR et al.</strong> Homeostasis model assessment: insulin resistance and β-cell function from fasting plasma glucose and insulin.
+      <em>Diabetologia.</em> 1985;28:412–419.
+    </div>
+
+  </div>
+</div><!-- /results-screen -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  CONFIGURACIÓN
+//  Reemplaza con la URL de tu Google Sheet publicada como CSV
+// ═══════════════════════════════════════════════════════════════
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1WUL5n_ZNyfiR6nX3XXU005j1GWGD90xrMUYuywTzYik/edit?usp=sharing';
+
+// ═══════════════════════════════════════════════════════════════
+//  VALORES DE REFERENCIA
+//  Columnas del CSV: NUMERO, NOMBRE, FECHA_PROCESO, GLU, CREA,
+//  COL, TGC, HDL, LDL, VLDL, AST, ALT, LDH, INSULINA,
+//  HOMA_IR, HEMOLISIS, CODIGO (agregada por script R)
+// ═══════════════════════════════════════════════════════════════
+
+// Sin sexo en el CSV → se usan rangos generales o los más conservadores
+const REF = {
+  COL:     { name: 'Colesterol Total', unit: 'mg/dL', range: '< 200 (deseable)',
+             eval: v => v < 200 ? 'normal' : v < 240 ? 'borderline' : 'high',
+             label: v => v < 200 ? 'Normal' : v < 240 ? 'Limítrofe' : 'Alto' },
+  HDL:     { name: 'HDL-c', unit: 'mg/dL', range: '≥ 40 (H) / ≥ 50 (M)',
+             eval: v => v >= 40 ? 'normal' : 'low',
+             label: v => v >= 60 ? 'Óptimo' : v >= 40 ? 'Normal' : 'Bajo' },
+  LDL:     { name: 'LDL-c', unit: 'mg/dL', range: '< 130',
+             eval: v => v < 100 ? 'normal' : v < 130 ? 'normal' : v < 160 ? 'borderline' : 'high',
+             label: v => v < 100 ? 'Óptimo' : v < 130 ? 'Normal' : v < 160 ? 'Limítrofe' : 'Alto' },
+  VLDL:    { name: 'VLDL-c', unit: 'mg/dL', range: '≤ 30',
+             eval: v => v <= 30 ? 'normal' : 'high',
+             label: v => v <= 30 ? 'Normal' : 'Alto' },
+  TGC:     { name: 'Triglicéridos', unit: 'mg/dL', range: '< 150',
+             eval: v => v < 150 ? 'normal' : v < 200 ? 'borderline' : 'high',
+             label: v => v < 150 ? 'Normal' : v < 200 ? 'Limítrofe' : v < 500 ? 'Alto' : 'Muy alto' },
+  GLU:     { name: 'Glucosa en ayuno', unit: 'mg/dL', range: '70–99',
+             eval: v => v < 70 ? 'low' : v < 100 ? 'normal' : v < 126 ? 'borderline' : 'high',
+             label: v => v < 70 ? 'Bajo' : v < 100 ? 'Normal' : v < 126 ? 'Limítrofe' : 'Alto' },
+  INSULINA:{ name: 'Insulina en ayuno', unit: 'µUI/mL', range: '2.6–25',
+             eval: v => v < 2.6 ? 'low' : v <= 25 ? 'normal' : 'high',
+             label: v => v < 2.6 ? 'Bajo' : v <= 25 ? 'Normal' : 'Alto' },
+  AST:     { name: 'AST (TGO)', unit: 'U/L', range: '10–40',
+             eval: v => v < 10 ? 'low' : v <= 40 ? 'normal' : 'high',
+             label: v => v < 10 ? 'Bajo' : v <= 40 ? 'Normal' : 'Alto' },
+  ALT:     { name: 'ALT (TGP)', unit: 'U/L', range: '7–41',
+             eval: v => v < 7 ? 'low' : v <= 41 ? 'normal' : 'high',
+             label: v => v < 7 ? 'Bajo' : v <= 41 ? 'Normal' : 'Alto' },
+  LDH:     { name: 'LDH', unit: 'U/L', range: '140–280',
+             eval: v => v < 140 ? 'low' : v <= 280 ? 'normal' : 'high',
+             label: v => v < 140 ? 'Bajo' : v <= 280 ? 'Normal' : 'Alto' },
+  CREA:    { name: 'Creatinina', unit: 'mg/dL', range: '0.6–1.2',
+             eval: v => v < 0.6 ? 'low' : v <= 1.2 ? 'normal' : 'high',
+             label: v => v < 0.6 ? 'Bajo' : v <= 1.2 ? 'Normal' : 'Alto' },
+};
+
+// ═══════════════════════════════════════════════════════════════
+//  ESTADO Y PARSEO
+// ═══════════════════════════════════════════════════════════════
+let allParticipants = [];
+
+function parseCSV(text) {
+  // Quitar BOM si existe
+  const clean = text.replace(/^\uFEFF/, '');
+  const lines = clean.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.replace(/"/g,'').trim().toUpperCase());
+  return lines.slice(1).map(line => {
+    // Manejo de comas dentro de comillas
+    const vals = line.match(/(".*?"|[^,]+|(?<=,)(?=,)|^(?=,)|(?<=,)$)/g) || line.split(',');
+    const obj = {};
+    headers.forEach((h, i) => {
+      obj[h] = (vals[i] || '').replace(/"/g,'').trim();
+    });
+    return obj;
+  }).filter(r => r.NOMBRE);
+}
+
+async function loadData() {
+  if (SHEET_URL === 'TU_GOOGLE_SHEET_CSV_URL_AQUI') {
+    return getDemoData();
+  }
+  try {
+    const res = await fetch(SHEET_URL);
+    const text = await res.text();
+    return parseCSV(text);
+  } catch(e) {
+    console.error('Error cargando Sheet:', e);
+    return getDemoData();
+  }
+}
+
+// Datos demo con la misma estructura que 01_laboratorio.csv + CODIGO
+function getDemoData() {
+  return [
+    { CODIGO:'AB3K7M', NUMERO:'1', NOMBRE:'Monica Edith Martinez Mora',
+      FECHA_PROCESO:'5 DE MARZO DEL 2026',
+      GLU:'81', CREA:'0.7', COL:'189', TGC:'181', HDL:'48', LDL:'109', VLDL:'30',
+      AST:'25', ALT:'29', LDH:'212', INSULINA:'20.3', HOMA_IR:'4.06', HEMOLISIS:'0' },
+    { CODIGO:'XZ9P2Q', NUMERO:'2', NOMBRE:'Angelita Delgadillo Salazar',
+      FECHA_PROCESO:'5 DE MARZO DEL 2026',
+      GLU:'95', CREA:'0.8', COL:'175', TGC:'110', HDL:'55', LDL:'98', VLDL:'22',
+      AST:'22', ALT:'24', LDH:'195', INSULINA:'8.5', HOMA_IR:'2.0', HEMOLISIS:'0' },
+  ];
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  LOGIN / LOGOUT
+// ═══════════════════════════════════════════════════════════════
+async function handleLogin() {
+  const code = document.getElementById('access-code').value.trim().toUpperCase();
+  if (!code) return;
+
+  document.getElementById('error-msg').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('loading-screen').style.display = 'flex';
+
+  if (!allParticipants.length) {
+    allParticipants = await loadData();
+  }
+
+  const p = allParticipants.find(r =>
+    (r.CODIGO || '').trim().toUpperCase() === code
+  );
+
+  setTimeout(() => {
+    document.getElementById('loading-screen').style.display = 'none';
+    if (p) {
+      renderResults(p);
+      document.getElementById('results-screen').style.display = 'block';
+      window.scrollTo(0, 0);
+    } else {
+      document.getElementById('login-screen').style.display = 'flex';
+      document.getElementById('error-msg').style.display = 'block';
+    }
+  }, 900);
+}
+
+document.getElementById('access-code').addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleLogin();
+});
+
+function handleLogout() {
+  document.getElementById('results-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('access-code').value = '';
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  RENDER RESULTADOS
+// ═══════════════════════════════════════════════════════════════
+function renderResults(p) {
+  // Encabezado
+  document.getElementById('patient-name').textContent = toTitleCase(p.NOMBRE || '');
+  const parts = [];
+  if (p.FECHA_PROCESO) parts.push('Muestra: ' + p.FECHA_PROCESO);
+  if (p.NUMERO)        parts.push('Folio #' + p.NUMERO);
+  document.getElementById('patient-meta').textContent = parts.join(' · ');
+
+  // Hemólisis
+  const hemEl = document.getElementById('hemolisis-alert');
+  hemEl.style.display = parseInt(p.HEMOLISIS) === 1 ? 'flex' : 'none';
+
+  // ── HOMA-IR ─────────────────────────────────────────────
+  const homa = parseFloat(p.HOMA_IR);
+  if (!isNaN(homa)) {
+    document.getElementById('homa-value').textContent = homa.toFixed(2);
+    const isRI = homa >= 2.5;
+    const badge = document.getElementById('homa-badge');
+    badge.textContent = isRI ? 'Resistencia a la insulina' : 'Sin resistencia a la insulina';
+    badge.className = 'homa-badge ' + (isRI ? 'altered' : 'normal');
+
+    // barra: escala 0–5, clamped
+    const pct = Math.min(homa / 5, 1) * 100;
+    setTimeout(() => {
+      document.getElementById('homa-marker').style.left = pct + '%';
+    }, 300);
+
+    document.getElementById('homa-interp').innerHTML = homaText(homa);
+  }
+
+  // ── LÍPIDOS ──────────────────────────────────────────────
+  renderTable('tbody-lipidos', [
+    makeRow(p.COL,  REF.COL),
+    makeRow(p.HDL,  REF.HDL),
+    makeRow(p.LDL,  REF.LDL),
+    makeRow(p.VLDL, REF.VLDL),
+    makeRow(p.TGC,  REF.TGC),
+  ]);
+
+  // Índice TG/HDL-c
+  const tg  = parseFloat(p.TGC);
+  const hdl = parseFloat(p.HDL);
+  if (!isNaN(tg) && !isNaN(hdl) && hdl > 0) {
+    const idx = tg / hdl;
+    document.getElementById('tghdl-value').textContent = idx.toFixed(2);
+    document.getElementById('tghdl-interp').innerHTML  = tgHdlText(idx);
+  }
+
+  // ── GLUCOSA E INSULINA ────────────────────────────────────
+  renderTable('tbody-glucosa', [
+    makeRow(p.GLU,      REF.GLU),
+    makeRow(p.INSULINA, REF.INSULINA),
+  ]);
+
+  // ── HEPÁTICA ─────────────────────────────────────────────
+  renderTable('tbody-hepatica', [
+    makeRow(p.AST, REF.AST),
+    makeRow(p.ALT, REF.ALT),
+    makeRow(p.LDH, REF.LDH),
+  ]);
+
+  // ── RENAL ────────────────────────────────────────────────
+  renderTable('tbody-renal', [
+    makeRow(p.CREA, REF.CREA),
+  ]);
+
+  // ── RECOMENDACIONES ──────────────────────────────────────
+  renderRecos(homa, tg, hdl, parseFloat(p.GLU));
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════════════
+function makeRow(rawVal, ref) {
+  const v = parseFloat(rawVal);
+  if (isNaN(v) || !ref) return null;
+  const cls   = ref.eval(v);
+  const label = ref.label(v);
+  return { name: ref.name, unit: ref.unit, val: v, range: ref.range, label, cls };
+}
+
+function renderTable(tbodyId, rows) {
+  const icons = { normal:'✓', high:'↑', low:'↓', borderline:'~' };
+  const tbody = document.getElementById(tbodyId);
+  tbody.innerHTML = rows.filter(Boolean).map(r => `
+    <tr>
+      <td><span class="analyte-name">${r.name}</span><span class="analyte-unit">${r.unit}</span></td>
+      <td class="value-cell value-${r.cls}">${r.val}</td>
+      <td class="ref-range">${r.range}</td>
+      <td class="status-cell"><span class="status-pill ${r.cls}">${icons[r.cls]||''} ${r.label}</span></td>
+    </tr>`).join('');
+}
+
+function renderRecos(homa, tg, hdl, glu) {
+  const r = [];
+  r.push({ e:'🥗', t:'Alimentación balanceada',
+    d:'Prefiere alimentos de bajo índice glucémico: verduras, leguminosas y granos enteros. Reduce azúcares añadidos y harinas refinadas.' });
+  r.push({ e:'🚶', t:'Actividad física regular',
+    d:'Realiza al menos 150 min/semana de actividad moderada (caminata rápida, bicicleta). Complementa con ejercicio de fuerza 2 veces por semana.' });
+
+  if (!isNaN(homa) && homa >= 2.5) {
+    r.push({ e:'🩺', t:'Seguimiento médico',
+      d:'Los valores de HOMA-IR sugieren resistencia a la insulina. Es recomendable consulta médica para evaluación y seguimiento.' });
+    r.push({ e:'⏰', t:'Horarios regulares de comida',
+      d:'Evita el ayuno prolongado y distribuye los carbohidratos a lo largo del día en porciones moderadas.' });
+  }
+
+  if (!isNaN(tg) && !isNaN(hdl) && hdl > 0 && tg/hdl > 3.5) {
+    r.push({ e:'🐟', t:'Ácidos grasos omega-3',
+      d:'Incrementa el consumo de pescados grasos (salmón, sardina, atún) y semillas de chía o linaza para mejorar el perfil lipídico.' });
+  }
+
+  if (!isNaN(glu) && glu >= 100) {
+    r.push({ e:'🍬', t:'Reducción de azúcares simples',
+      d:'Limita refrescos, jugos industriales y dulces. Prefiere agua natural y frutas enteras con moderación.' });
+  }
+
+  r.push({ e:'😴', t:'Sueño reparador',
+    d:'Duerme entre 7 y 9 horas por noche. La privación de sueño aumenta la resistencia a la insulina y los niveles de triglicéridos.' });
+  r.push({ e:'🚭', t:'Evitar tabaco y alcohol',
+    d:'El tabaquismo y el consumo regular de alcohol reducen el HDL-c y aumentan el riesgo cardiovascular y metabólico.' });
+
+  document.getElementById('reco-grid').innerHTML = r.map(x => `
+    <div class="reco-item">
+      <div class="reco-emoji">${x.e}</div>
+      <div class="reco-content"><h4>${x.t}</h4><p>${x.d}</p></div>
+    </div>`).join('');
+}
+
+function homaText(homa) {
+  if (homa < 1.0) return `<strong>HOMA-IR ${homa.toFixed(2)}:</strong> Sensibilidad a la insulina óptima. El páncreas produce insulina de forma eficiente y las células responden adecuadamente.`;
+  if (homa < 2.5) return `<strong>HOMA-IR ${homa.toFixed(2)}:</strong> Dentro del rango normal (punto de corte: 2.5). No se detecta resistencia a la insulina.`;
+  if (homa < 3.5) return `<strong>HOMA-IR ${homa.toFixed(2)}:</strong> <span style="color:var(--warn)">Por encima del punto de corte (≥ 2.5).</span> Indica resistencia a la insulina moderada. Se recomienda modificar el estilo de vida y tener seguimiento médico.`;
+  return `<strong>HOMA-IR ${homa.toFixed(2)}:</strong> <span style="color:var(--warn)">Resistencia a la insulina marcada (≥ 3.5).</span> El organismo requiere mayor producción de insulina para mantener glucosa normal. Se recomienda evaluación médica.`;
+}
+
+function tgHdlText(idx) {
+  // Punto de corte referencial general: ~3.5 (varía por población)
+  if (idx < 3.0)  return `Índice dentro de rango favorable (${idx.toFixed(2)}). Valores menores a 3.0 se asocian con buen perfil metabólico y menor riesgo de resistencia a la insulina.`;
+  if (idx < 3.5)  return `Índice limítrofe (${idx.toFixed(2)}). Se recomienda monitoreo y atención al estilo de vida para evitar progresión.`;
+  return `<span style="color:var(--warn)">Índice elevado (${idx.toFixed(2)}, punto de corte referencial ≥ 3.5).</span> Este índice actúa como marcador indirecto de resistencia a la insulina y riesgo cardiovascular aumentado.`;
+}
+
+function toTitleCase(str) {
+  return str.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+}
+</script>
+</body>
+</html>
