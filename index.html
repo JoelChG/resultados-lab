@@ -487,7 +487,7 @@
   .results-table { width: 100%; border-collapse: collapse; }
 
   .results-table th {
-    padding: 0.55rem 1.5rem;
+    padding: 0.55rem 1.25rem;
     font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -502,7 +502,7 @@
   .results-table th:last-child { text-align: center; }
 
   .results-table td {
-    padding: 0.8rem 1.5rem;
+    padding: 0.8rem 1.25rem;
     font-size: 0.9rem;
     border-bottom: 1px solid var(--border);
     vertical-align: middle;
@@ -545,6 +545,51 @@
   .status-pill.high       { background: var(--warn-light);  color: var(--warn); }
   .status-pill.low        { background: var(--blue-light);  color: var(--blue); }
   .status-pill.borderline { background: var(--gold-light);  color: #8a6a00; }
+
+  /* ── MOBILE: tabla como tarjetas ────────────────────────── */
+  @media (max-width: 540px) {
+    .results-table thead { display: none; }
+
+    .results-table tr {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border);
+      gap: 0.15rem 0.5rem;
+    }
+
+    .results-table tr:last-child { border-bottom: none; }
+    .results-table tr:hover td   { background: none; }
+
+    .results-table td:nth-child(1) {
+      grid-column: 1; grid-row: 1;
+      padding: 0; border: none;
+      font-size: 0.88rem;
+    }
+
+    .results-table td:nth-child(2) {
+      grid-column: 2; grid-row: 1;
+      padding: 0; border: none;
+      text-align: right;
+      font-size: 1.05rem;
+    }
+
+    .results-table td:nth-child(3) {
+      grid-column: 1; grid-row: 2;
+      padding: 0; border: none;
+      font-size: 0.76rem;
+      color: var(--ink3);
+    }
+
+    .results-table td:nth-child(4) {
+      grid-column: 2; grid-row: 2;
+      padding: 0; border: none;
+      text-align: right;
+    }
+
+    .status-pill { font-size: 0.68rem; padding: 0.18rem 0.5rem; }
+  }
 
   /* ── TG/HDL INDEX ──────────────────────────────────────── */
   .index-card {
@@ -628,10 +673,13 @@
   /* ── RESPONSIVE ─────────────────────────────────────────── */
   @media (max-width: 600px) {
     .login-card { padding: 2rem 1.5rem; }
-    .results-container { padding: 1.5rem 1rem 3rem; }
-    .results-table th, .results-table td { padding: 0.65rem 0.875rem; }
+    .results-container { padding: 1.5rem 0.875rem 3rem; }
     .top-bar { padding: 0.875rem 1rem; }
+    .homa-card { padding: 1.5rem 1.25rem; }
     .homa-header { flex-direction: column; }
+    .panel-header { padding: 0.875rem 1rem; }
+    .index-card { margin: 0 1rem 1.25rem; }
+    .reco-grid { padding: 1rem; gap: 0.75rem; }
   }
 </style>
 </head>
@@ -709,7 +757,7 @@
       <div class="homa-header">
         <div class="homa-title">
           Índice HOMA-IR
-          <small>Homeostatic Model Assessment of Insulin Resistance · Matthews et al., 1985</small>
+          <small>Homeostatic Model Assessment of Insulin Resistance</small>
         </div>
         <div class="homa-value-box">
           <div class="homa-number" id="homa-value">—</div>
@@ -728,6 +776,9 @@
         </div>
       </div>
       <div class="homa-interpretation" id="homa-interp"></div>
+      <div style="margin-top:0.75rem; font-size:0.72rem; color:var(--ink3); line-height:1.6;">
+        <strong>Referencia:</strong> Matthews DR, Hosker JP, Rudenski AS, et al. Homeostasis model assessment: insulin resistance and β-cell function from fasting plasma glucose and insulin concentrations in man. <em>Diabetologia.</em> 1985;28(7):412–419.
+      </div>
     </div>
 
     <!-- ── PERFIL DE LÍPIDOS ──────────────────────────────── -->
@@ -827,9 +878,11 @@
     <div class="disclaimer">
       Estos resultados forman parte del estudio de investigación sobre el índice TG/HDL-c como marcador de resistencia a la insulina.<br>
       La información tiene fines exclusivamente académicos y de devolución de resultados a los participantes.<br>
-      Para orientación clínica personalizada, consulta a tu médico tratante.<br>
-      <strong>Matthews DR et al.</strong> Homeostasis model assessment: insulin resistance and β-cell function from fasting plasma glucose and insulin.
-      <em>Diabetologia.</em> 1985;28:412–419.
+      Para orientación clínica personalizada, consulta a tu médico tratante.
+    </div>
+
+    <div style="margin-top:1.5rem; padding: 1.25rem; text-align:center; font-size:0.8rem; color:var(--ink3);">
+      Hecho por <strong style="color:var(--ink2);">Joel Chávez Gómez</strong>
     </div>
 
   </div>
@@ -840,7 +893,7 @@
 //  CONFIGURACIÓN
 //  Reemplaza con la URL de tu Google Sheet publicada como CSV
 // ═══════════════════════════════════════════════════════════════
-const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQUJtycCRvvAKvR9WVLu_5aTfIB8pTOdoXqkRFty2xVCnpGizQichTcYg1uoesyJP4mrkDS0LjaKZoC/pub?output=csv';
+const SHEET_URL = 'TU_GOOGLE_SHEET_CSV_URL_AQUI';
 
 // ═══════════════════════════════════════════════════════════════
 //  VALORES DE REFERENCIA
